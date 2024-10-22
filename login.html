@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script>
+        async function login() {
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            });
+
+            const data = await response.json();
+
+            if (data.token) {
+                // Armazenar o token JWT no localStorage
+                localStorage.setItem('token', data.token);
+                window.location.href = 'index.html';
+            } else {
+                alert(data.message);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Login</h1>
+    <form onsubmit="event.preventDefault(); login();">
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button type="submit">Login</button>
+    </form>
+    <br>
+    Não possui conta? <a href="register.html">Registrar uma conta</a>
+</body>
+</html>

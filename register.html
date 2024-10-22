@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar-se</title>
+    <script>
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Usuário registrado com sucesso! Faça login.');
+                    window.location.href = 'login.html';
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro durante o registro.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Registrar-se</h1>
+    <form onsubmit="event.preventDefault(); register();">
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button type="submit">Registrar</button>
+    </form>
+    <p>Já tem uma conta? <a href="login.html">Faça login aqui</a>.</p>
+</body>
+</html>
